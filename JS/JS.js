@@ -165,21 +165,21 @@ $('li').click(function(){
 });
 
 $(document).keypress(function(event){
-	if(event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 46){
-		var str = String.fromCharCode(event.keyCode);
+	if(event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46){
+		var str = String.fromCharCode(event.charCode);
 		pressedNum(str);
 		}
-		else if (event.keyCode == 32) {
+		else if (event.charCode == 32) {
 			pressedNum('C');
 		}
 		//else if (event.keyCode == 8) {
 			//pressedNum('CE');
 		//}
-		else if (event.keyCode == 42 || event.keyCode == 43 || event.keyCode == 45 || event.keyCode == 47 || event.keyCode == 61) {
-			var str = String.fromCharCode(event.keyCode);
+		else if (event.charCode == 42 || event.charCode == 43 || event.charCode == 45 || event.charCode == 47 || event.charCode == 61) {
+			var str = String.fromCharCode(event.charCode);
 			pressedOp(str);
 		}
-		else if (event.keyCode == 115) {
+		else if (event.charCode == 115) {
 			pressedOp('√')
 		}
 	
