@@ -51,43 +51,44 @@ function showRes() {
 	$('.res').html(str);
 }
 function pressedNum(val){
-	var cur;
+	var cur; // сюда запишем ключ элемента обьекта, с которым будем работать
 	
 	if( oper.o1 == 'E') {
 		oper.o1 = '0';
 		nextOper = false;
 	}
 	
-	if (nextOper && oper.o == '') { 
-		oper.o1 = '0'; 								
-		cur = 'o1';										
-		nextOper = false;
+	if (nextOper && oper.o == '') { // если флаг включен (должны работать со вторым операндом), но оператор не указан
+		oper.o1 = '0'; 								// обнуляем первый операнд
+		cur = 'o1';										// указываем его как рабочий
+		nextOper = false; 						// снимаем флаг (продолжаем работать с первым, пока не будет нажата кнопка операции)
 	}
 
   
-  else if (nextOper) {					
-		cur = 'o2';				 						
+  else if (nextOper) {					// если флаг включен (должны работать со вторым операндом) и оператор указан
+		cur = 'o2';				 						// определяем второй операнд как рабочий
 	}
  
-  else {												
-		cur = 'o1';
+  else {												// во всех остальных случаях
+		cur = 'o1';										// работаем с первым операндом
 	}
 	switch (val) {
-		case 'C':											
-			oper.o1 = '0';
+		case 'C':											// нажата кнопка С
+			oper.o1 = '0';							// обнуляем все, вместе с оператором
 			oper.o2 = '0';
 			oper.o = '';
 			break;
-		case 'CE':
-			oper[cur] = '0';						
+		case 'CE':										// нажата кнопка СЕ
+			oper[cur] = '0';						// обнуляем операнд, который указан как текущий
 			break;
- 		case ',':
-			oper[cur] = (oper[cur].includes('.')) ? oper[cur] : oper[cur]+'.';
+ 		case ',':											// нажата запятая
+			oper[cur] = (oper[cur].includes('.')) ? oper[cur] : oper[cur]+'.';	// дописываем ее в конец строки текущего опреанда
  			break;
- 			case '.':						
-			oper[cur] = (oper[cur].includes('.')) ? oper[cur] : oper[cur]+'.';
+ 			case '.':											// нажата точка с клавиатуры
+			oper[cur] = (oper[cur].includes('.')) ? oper[cur] : oper[cur]+'.';	// дописываем ее в конец строки текущего опреанда
  			break;
-		default:
+		default:											// во всех остальных случаях
+			// если текущий операнд равен 0, то меняем его значение на val, или дописываем значение в конец строки
 			oper[cur] = (oper[cur] == '0') ? val : oper[cur]+val; 
 			break;
 	}
@@ -119,17 +120,20 @@ if( oper.o1 == 'E') {
 	if (val == '+/-' && oper.o2 != '0') {
 		oper.o2 = -oper.o2;
 		}
-	else if (val == '=' || oper.o != '' && oper.o2 != '0') {
-		r = methods[oper.o](oper.o1, oper.o2); 
-		if (val == '=' || val == '√' || val == '+/-' || val == '1/x') {					
-			oper.o = '';
+	else if (val == '=' || oper.o != '' && oper.o2 != '0') {	// если нажато "=" или оператор не пустой
+		r = methods[oper.o](oper.o1, oper.o2); // считаем, что же у нас получилось	
+		if (val == '=' || val == '√' || val == '+/-' || val == '1/x') {					// если было нажато "="
+			oper.o = '';									// необходимо сбросить оператор
 		}
-    	else {												
+    	else {												// в остальных случаях
+			// ставим оператор который был нажат. 
+			// т.е. выполнили операцию с оператором который 
+			// был и установили новый, нажатый пользователем
 			oper.o = val;									
 		}
-	oper.o1 = r;
-	nextOper = true;
-	oper.o2 = '0';
+	oper.o1 = r;			// т.к. мы получили результат, записываем его в первый операнд
+	nextOper = true;	// устанавливаем флаг работы со следующим операндом
+	oper.o2 = '0';		// второй операнд обнуляем
 	} 
 	else if (val == '√' || val == '1/x' || val == '+/-' && oper.o2 == '0') {
 		r = methods[oper.o](oper.o1);
@@ -139,12 +143,12 @@ if( oper.o1 == 'E') {
 		oper.o2 = '0';
 	}  
 
-  else {
-		oper.o = val;
-		nextOper = true;
+  else {													// в остальных случаях
+		oper.o = val;										// устанавливаем оператор
+		nextOper = true;									// устанавливаем флаг работы со следующим операндом						
 	}
  
-	showRes();
+	showRes();  // выводим результат
 }
 $('.num').click(function(){
   
@@ -168,6 +172,9 @@ $(document).keypress(function(event){
 		else if (event.charCode == 32) {
 			pressedNum('C');
 		}
+		//else if (event.keyCode == 8) {
+			//pressedNum('CE');
+		//}
 		else if (event.charCode == 42 || event.charCode == 43 || event.charCode == 45 || event.charCode == 47 || event.charCode == 61) {
 			var str = String.fromCharCode(event.charCode);
 			pressedOp(str);
